@@ -1,6 +1,8 @@
 import React from 'react'
+// import Community from './community/Community'
+import Community from './Community'
 
-const Testnav = () => {
+const Navbar= () => {
   return (
      <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -25,8 +27,8 @@ const Testnav = () => {
               </a>
             </li>
             <li>
-              <a href="/community" className="hover:text-green-600 transition">
-                Community
+              <a className="hover:text-green-600 transition">
+              <Community/>
               </a>
             </li>
             <li>
@@ -40,4 +42,4 @@ const Testnav = () => {
   )
 }
 
-export default Testnav
+export default Navbar

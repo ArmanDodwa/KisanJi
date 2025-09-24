@@ -3,9 +3,13 @@ import Hero from "./Pages/Hero"
 import Aichat from "./Pages/Aichat"
 import Analysis from "./Pages/Analysis"
 import Cropmonitoring from "./Pages/Cropmonitoring"
-import Community from "./Pages/Community"
 import Support from "./Pages/Support"
 import NotFound from "./Notfound"
+import Broadcast from "./Pages/community/Broadcast"
+import ExpertGuidance from "./Pages/community/ExpertGuidance"
+import Vlog from "./Pages/community/Vlog"
+import Community from "./Pages/Community"
+
 
 function App() {
 
@@ -20,6 +24,9 @@ function App() {
         <Route path="/cropmonitoring" element={<Cropmonitoring/>} />
         <Route path="/community" element={<Community/>} />
         <Route path="/Support" element={<Support/>} />
+        <Route path="/Broadcast" element={<Broadcast/>} />
+        <Route path="/ExpertGuidance" element={<ExpertGuidance/>} />
+        <Route path="/Vlog" element={<Vlog/>} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </BrowserRouter>
