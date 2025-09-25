@@ -1,6 +1,12 @@
 import React from "react";
 import Navbar from "./navBar";
+import { useLanguage } from "../Hook/LanguageContext"; // adjust path
+import OurServices from "./OurServices";
+
 const Hero = () => {
+  const { t } = useLanguage();
+
+  console.log(t);
   return (
     <div>
       {/* Navbar */}
@@ -12,13 +18,10 @@ const Hero = () => {
           {/* Left Part */}
           <div className="flex flex-col justify-center">
             <h2 className="text-5xl font-extrabold text-green-700 mb-6">
-              Welcome to KisanJi
+              {t.heroTitle}
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Smart Crop Advice, Right in Your Hands Empowering small farmers
-              with real-time, voice-driven, and multilingual crop
-              guidance—accessible anytime, even offline. Trusted by farmers.
-              Powered by AI. Connected through WhatsApp.
+              {t.heroDescription}
             </p>
           </div>
 
@@ -33,27 +36,15 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Other Sections (same style) */}
-      <section className="h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-white">
-        <div className="text-center">
-          <h2 className="text-5xl font-extrabold text-green-700 mb-4">
-            Our Services
-          </h2>
-          <p className="text-lg text-gray-600">
-            Explore solutions for modern agriculture, support, and
-            sustainability.
-          </p>
-        </div>
-      </section>
+      {/* Other Sections */}
+      <OurServices />
 
       <section className="h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-white">
         <div className="text-center">
           <h2 className="text-5xl font-extrabold text-green-700 mb-4">
-            Get Connected
+            {t.connectTitle}
           </h2>
-          <p className="text-lg text-gray-600">
-            Contact us for partnerships, queries, or farmer support programs.
-          </p>
+          <p className="text-lg text-gray-600">{t.connectDescription}</p>
         </div>
       </section>
     </div>
