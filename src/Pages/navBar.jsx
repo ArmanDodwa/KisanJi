@@ -1,5 +1,7 @@
 import React from "react";
 import { useLanguage } from "../Hook/LanguageContext"; // adjust path
+import Community from "./Community";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { lang, setLang, t } = useLanguage(); // get from context
@@ -9,7 +11,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         
         {/* Left Side: Logo */}
-        <h1 className="text-2xl font-bold text-green-600">{t.logo}</h1>
+        <h1 className="text-2xl font-bold text-green-600">
+        <Link to="/">{t.logo}</Link>
+        </h1>
 
         {/* Right Side: Links + Language */}
         <div className="flex items-center space-x-6">
@@ -33,7 +37,7 @@ const Navbar = () => {
               </a>
             </li>
             <li>
-              <a className="hover:text-green-600 transition">{t.community}</a>
+              <a className="hover:text-green-600 transition"><Community/></a>
             </li>
             <li>
               <a href="#Support" className="hover:text-green-600 transition">

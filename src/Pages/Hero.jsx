@@ -2,7 +2,8 @@ import React from "react";
 import Navbar from "./navBar";
 import { useLanguage } from "../Hook/LanguageContext"; // adjust path
 import OurServices from "./OurServices";
-
+import Connection from "./Connection";
+import Footer from "./Footer";
 const Hero = () => {
   const { t } = useLanguage();
 
@@ -39,14 +40,9 @@ const Hero = () => {
       {/* Other Sections */}
       <OurServices />
 
-      <section className="h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-white">
-        <div className="text-center">
-          <h2 className="text-5xl font-extrabold text-green-700 mb-4">
-            {t.connectTitle}
-          </h2>
-          <p className="text-lg text-gray-600">{t.connectDescription}</p>
-        </div>
-      </section>
+      <Connection />
+
+      <Footer />
     </div>
   );
 };

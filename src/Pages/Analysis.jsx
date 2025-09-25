@@ -1,82 +1,155 @@
-import { Line } from "react-chartjs-2";
+import React, { useState } from "react";
+import Navbar from "./navBar";
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
+import { stateData } from "../assets/data.js";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
 
 export default function AnalysisPage() {
-  // Hardcoded prices (example over 5 months)
-  const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+  const [state, setState] = useState("Madhya Pradesh");
+  const selectedData = stateData[state];
+
+  // Production Line Chart
+  const productionData = {
+    labels: selectedData.months,
+    datasets: selectedData.crops.map((crop, idx) => ({
+      label: crop,
+      data: selectedData.production[crop],
+      borderColor: `hsl(${idx * 60}, 70%, 50%)`,
+      backgroundColor: `hsla(${idx * 60}, 70%, 50%, 0.2)`,
+      tension: 0.3,
+    })),
+  };
+  const productionOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+      title: {
+        display: true,
+        text: `Crop Production Trend - ${state}`,
+        font: { size: 20 },
+      },
+    },
+  };
+
+  // Price Bar Chart
+  const priceData = {
+    labels: selectedData.crops,
     datasets: [
       {
-        label: "Rice Price (₹/kg)",
-        data: [40, 42, 41, 43, 45],
-        borderColor: "rgba(34,197,94,1)", // Green
-        backgroundColor: "rgba(34,197,94,0.2)",
-        tension: 0.3,
-      },
-      {
-        label: "Sugarcane Price (₹/kg)",
-        data: [25, 26, 27, 28, 27],
-        borderColor: "rgba(245,158,11,1)", // Orange
-        backgroundColor: "rgba(245,158,11,0.2)",
-        tension: 0.3,
-      },
-      {
-        label: "Wheat Price (₹/kg)",
-        data: [30, 31, 30, 32, 33],
-        borderColor: "rgba(59,130,246,1)", // Blue
-        backgroundColor: "rgba(59,130,246,0.2)",
-        tension: 0.3,
-      },
-      {
-        label: "Corn Price (₹/kg)",
-        data: [20, 21, 22, 23, 22],
-        borderColor: "rgba(236,72,153,1)", // Pink
-        backgroundColor: "rgba(236,72,153,0.2)",
-        tension: 0.3,
+        label: "Crop Prices (₹/kg)",
+        data: selectedData.crops.map(
+          (crop) => selectedData.currentMarketPrice[crop]
+        ),
+        backgroundColor: selectedData.crops.map(
+          (_, idx) => `hsl(${idx * 60}, 70%, 50%)`
+        ),
       },
     ],
   };
-
-  const options = {
+  const priceOptions = {
     responsive: true,
     plugins: {
-      legend: {
-        position: "top",
-      },
+      legend: { display: false },
       title: {
         display: true,
-        text: "Commodity Price Analysis",
+        text: `Current Crop Prices - ${state}`,
         font: { size: 20 },
       },
     },
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-green-50 px-6 py-12">
-      <h1 className="text-4xl font-bold text-green-700 mb-8">
-        Commodity Price Analysis
-      </h1>
-      <div className="w-full max-w-4xl bg-white p-6 rounded-xl shadow-lg">
-        <Line data={data} options={options} />
+    <div className="min-h-screen bg-green-50">
+      <Navbar />
+      <div className="max-w-7xl mx-auto px-6 py-8 mt-20">
+        <h1 className="text-4xl font-bold text-green-700 mb-6">
+          State Crop Analysis
+        </h1>
+
+        {/* State Selector */}
+        <div className="mb-8">
+          <select
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className="border border-gray-300 rounded px-4 py-2"
+          >
+            {Object.keys(stateData).map((st) => (
+              <option key={st}>{st}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Graphs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <Line data={productionData} options={productionOptions} />
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <Bar data={priceData} options={priceOptions} />
+          </div>
+        </div>
+
+        {/* Info Boxes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Local Market */}
+          <div className="bg-green-100 rounded-xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-green-700 mb-4">
+              Local Market Price
+            </h2>
+            {selectedData.crops.map((crop) => (
+              <p key={crop} className="text-gray-700 mb-1">
+                <span className="font-semibold">{crop}:</span> ₹
+                {selectedData.currentMarketPrice[crop]}/kg
+              </p>
+            ))}
+          </div>
+
+          {/* Price Alerts */}
+          <div className="bg-green-100 rounded-xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-green-700 mb-4">
+              Price Alert
+            </h2>
+            {selectedData.crops.map((crop) => {
+              const alert = selectedData.priceAlert[crop];
+              return (
+                <p
+                  key={crop}
+                  className={`mb-1 ${
+                    alert.text === "Up"
+                      ? "text-green-600"
+                      : alert.text === "Down"
+                      ? "text-red-600"
+                      : "text-gray-600"
+                  }`}
+                >
+                  <span className="font-semibold">{crop}:</span> {alert.text} (
+                  {alert.percent})
+                </p>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
