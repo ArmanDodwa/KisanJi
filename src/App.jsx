@@ -9,13 +9,14 @@ import Broadcast from "./Pages/community/Broadcast";
 import ExpertGuidance from "./Pages/community/ExpertGuidance";
 import Vlog from "./Pages/community/Vlog";
 
+
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/" element={<Navigate to="/Login" replace />} />
-        <Route path="/Hero" element={<Hero />} />
         <Route path="/aichat" element={<Aichat />} />
         <Route path="/analysis" element={<Analysis />} />
         <Route path="/cropmonitoring" element={<Cropmonitoring />} />

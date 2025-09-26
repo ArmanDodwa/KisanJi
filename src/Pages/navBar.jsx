@@ -10,7 +10,10 @@ const Navbar = () => {
   // Close dropdown if click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (communityRef.current && !communityRef.current.contains(event.target)) {
+      if (
+        communityRef.current &&
+        !communityRef.current.contains(event.target)
+      ) {
         setIsCommunityOpen(false);
       }
     };
@@ -23,7 +26,6 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        
         {/* Left Side: Logo */}
         <h1 className="text-2xl font-bold text-green-600">
           <Link to="/">{t.logo}</Link>
@@ -43,7 +45,10 @@ const Navbar = () => {
               </a>
             </li>
             <li>
-              <a href="/cropmonitoring" className="hover:text-green-600 transition">
+              <a
+                href="/cropmonitoring"
+                className="hover:text-green-600 transition"
+              >
                 {t.cropMonitoring}
               </a>
             </li>
@@ -61,18 +66,27 @@ const Navbar = () => {
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                   <ul className="flex flex-col text-gray-700">
                     <li>
-                      <a href="/Vlog" className="block px-4 py-2 hover:bg-green-100">
-                        Vlog
+                      <a
+                        href="/Vlog"
+                        className="block px-4 py-2 hover:bg-green-100"
+                      >
+                        {t.communityMenu.vlog}
                       </a>
                     </li>
                     <li>
-                      <a href="/ExpertGuidance" className="block px-4 py-2 hover:bg-green-100">
-                        Expert Guidance
+                      <a
+                        href="/ExpertGuidance"
+                        className="block px-4 py-2 hover:bg-green-100"
+                      >
+                        {t.communityMenu.expertGuidance}
                       </a>
                     </li>
                     <li>
-                      <a href="/Broadcast" className="block px-4 py-2 hover:bg-green-100">
-                        Broadcast
+                      <a
+                        href="/Broadcast"
+                        className="block px-4 py-2 hover:bg-green-100"
+                      >
+                        {t.communityMenu.broadcast}
                       </a>
                     </li>
                   </ul>

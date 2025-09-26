@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./navBar";
+import Navbar from "./NavBar.jsx";
 import { Line, Bar } from "react-chartjs-2";
 import { FaLeaf } from "react-icons/fa";
 import {
