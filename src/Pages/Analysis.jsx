@@ -117,12 +117,19 @@ export default function AnalysisPage() {
             <h2 className="text-2xl font-bold text-green-700 mb-4">
               Local Market Price
             </h2>
-            {selectedData.crops.map((crop) => (
-              <p key={crop} className="text-gray-700 mb-1">
-                <span className="font-semibold">{crop}:</span> ₹
-                {selectedData.currentMarketPrice[crop]}/kg
-              </p>
-            ))}
+            <div className="space-y-4">
+              {selectedData.crops.map((crop) => (
+                <div
+                  key={crop}
+                  className="bg-white rounded-lg p-4 shadow flex justify-between items-center w-full"
+                >
+                  <span className="font-semibold text-gray-800">{crop}</span>
+                  <span className="text-gray-700">
+                    ₹{selectedData.currentMarketPrice[crop]}/kg
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Price Alerts */}
@@ -130,24 +137,30 @@ export default function AnalysisPage() {
             <h2 className="text-2xl font-bold text-green-700 mb-4">
               Price Alert
             </h2>
-            {selectedData.crops.map((crop) => {
-              const alert = selectedData.priceAlert[crop];
-              return (
-                <p
-                  key={crop}
-                  className={`mb-1 ${
-                    alert.text === "Up"
-                      ? "text-green-600"
-                      : alert.text === "Down"
-                      ? "text-red-600"
-                      : "text-gray-600"
-                  }`}
-                >
-                  <span className="font-semibold">{crop}:</span> {alert.text} (
-                  {alert.percent})
-                </p>
-              );
-            })}
+            <div className="space-y-4">
+              {selectedData.crops.map((crop) => {
+                const alert = selectedData.priceAlert[crop];
+                return (
+                  <div
+                    key={crop}
+                    className="bg-white rounded-lg p-4 shadow flex justify-between items-center w-full"
+                  >
+                    <span className="font-semibold text-gray-800">{crop}</span>
+                    <span
+                      className={`font-semibold ${
+                        alert.text === "Up"
+                          ? "text-green-600"
+                          : alert.text === "Down"
+                          ? "text-red-600"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      {alert.text} ({alert.percent})
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
