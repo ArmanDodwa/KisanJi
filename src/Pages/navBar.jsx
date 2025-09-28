@@ -84,7 +84,7 @@ const Navbar = () => {
 
             <li>
               <a
-                href="#Support"
+                href="/Support"
                 className="px-3 py-2 rounded-md hover:border hover:border-green-600 transition text-sm md:text-base"
               >
                 {t.support}
