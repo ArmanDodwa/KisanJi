@@ -26,86 +26,77 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Left Side: Logo */}
+        {/* Logo */}
         <h1 className="text-2xl font-bold text-green-600">
-          <Link to="/">{t.logo}</Link>
+          <Link
+            to="/"
+            className="hover:border-b-2 border-green-600 transition pb-1"
+          >
+            {t.logo}
+          </Link>
         </h1>
 
-        {/* Right Side: Links + Language */}
+        {/* Links + Language */}
         <div className="flex items-center space-x-6">
-          <ul className="flex space-x-8 text-gray-700 font-medium">
-            <li>
-              <a href="/aichat" className="hover:text-green-600 transition">
-                {t.aiChat}
-              </a>
-            </li>
-            <li>
-              <a href="/analysis" className="hover:text-green-600 transition">
-                {t.analysis}
-              </a>
-            </li>
-            <li>
-              <a
-                href="/cropmonitoring"
-                className="hover:text-green-600 transition"
-              >
-                {t.cropMonitoring}
-              </a>
-            </li>
+          <ul
+            className={`flex space-x-4 md:space-x-8 text-gray-700 ${
+              lang === "hi" ? "font-bold" : "font-medium"
+            }`}
+          >
+            {/* Normal Links */}
+            {["aiChat", "analysis", "cropMonitoring"].map((link, idx) => (
+              <li key={idx}>
+                <a
+                  href={`/${link.toLowerCase()}`}
+                  className="px-3 py-2 rounded-md hover:border hover:border-green-600 transition text-sm md:text-base"
+                >
+                  {t[link]}
+                </a>
+              </li>
+            ))}
 
             {/* Community Dropdown */}
-            <li className="relative" ref={communityRef}>
+            <li className="relative -mt-2" ref={communityRef}>
               <button
                 onClick={() => setIsCommunityOpen((prev) => !prev)}
-                className="hover:text-green-600 transition cursor-pointer"
+                className="px-3 py-2 rounded-md hover:border hover:border-green-400 transition text-sm md:text-base"
               >
                 {t.community}
               </button>
 
               {isCommunityOpen && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
+                <div className="absolute top-full left-0 mt-2 w-52 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
                   <ul className="flex flex-col text-gray-700">
-                    <li>
-                      <a
-                        href="/Vlog"
-                        className="block px-4 py-2 hover:bg-green-100"
-                      >
-                        {t.communityMenu.vlog}
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/ExpertGuidance"
-                        className="block px-4 py-2 hover:bg-green-100"
-                      >
-                        {t.communityMenu.expertGuidance}
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/Broadcast"
-                        className="block px-4 py-2 hover:bg-green-100"
-                      >
-                        {t.communityMenu.broadcast}
-                      </a>
-                    </li>
+                    {Object.entries(t.communityMenu).map(([key, value]) => (
+                      <li key={key}>
+                        <a
+                          href={`/${key}`}
+                          className="block px-4 py-2 hover:bg-green-100 hover:border-l-4 border-green-600 transition"
+                        >
+                          {value}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}
             </li>
 
             <li>
-              <a href="#Support" className="hover:text-green-600 transition">
+              <a
+                href="#Support"
+                className="px-3 py-2 rounded-md hover:border hover:border-green-600 transition text-sm md:text-base"
+              >
                 {t.support}
               </a>
             </li>
           </ul>
 
-          {/* Small Language Dropdown */}
+          {/* Language Selector */}
           <select
             value={lang}
             onChange={(e) => setLang(e.target.value)}
-            className="border rounded px-2 py-1 text-xs focus:outline-none"
+            className="border rounded px-2 py-1 text-xs md:text-sm focus:outline-none hover:border-green-600 transition"
           >
             <option value="en">EN</option>
             <option value="hi">हिंदी</option>

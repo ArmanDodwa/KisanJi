@@ -1,113 +1,121 @@
-import React, { useEffect, useRef } from "react";
-import Navbar from "./NavBar";
-import { gsap } from "gsap";
-import farmerImg from "../assets/Picture/istockphoto-1367068216-612x612__2_-removebg-preview.png";
+import React, { useState, useRef, useEffect } from "react";
 import { useLanguage } from "../Hook/LanguageContext"; // adjust path
-import OurServices from "./OurServices";
-import Connection from "./Connection";
-import Footer from "./Footer";
 import { Link } from "react-router-dom";
 
-const Hero = () => {
-  const { t } = useLanguage();
+const Navbar = () => {
+  const { lang, setLang, t } = useLanguage();
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
+  const communityRef = useRef(null);
 
-  const containerRef = useRef(null);
-  const btn1Ref = useRef(null);
-  const btn2Ref = useRef(null);
-
+  // Close dropdown if click outside
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
-
-      // Text and image come in at the same time
-      tl.from(".hero-left", { x: -100, opacity: 0, duration: 2 }).from(
-        ".hero-right",
-        { x: 100, opacity: 0, duration: 2 },
-        "<"
-      ); // "<" = start at same time
-
-      // Buttons appear after text+image
-      // .from(".button", { opacity: 0, duration: 1, stagger: 0.2 });
-    }, containerRef);
-
-    return () => ctx.revert();
+    const handleClickOutside = (event) => {
+      if (
+        communityRef.current &&
+        !communityRef.current.contains(event.target)
+      ) {
+        setIsCommunityOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-100 to-green-200"
-    >
-      <Navbar />
+    <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Left Side: Logo */}
+        <h1 className="text-2xl font-bold text-green-600">
+          <Link to="/">{t.logo}</Link>
+        </h1>
 
-      <section className="flex flex-col-reverse md:flex-row items-center justify-center px-6 md:px-8 py-20 max-w-7xl mx-auto">
-        {/* LEFT */}
-        <div className="hero-left flex-1 text-center md:text-left space-y-6">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-green-800 leading-snug">
-            {t.heroTitle}
-            {/* <span className="inline-block">🌾</span> */}
-          </h2>
-
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-medium">
-            {t.heroDescription.split("|").map((line, i) => {
-              line = line.trim();
-
-              // Check if this line starts with "*" → apply special styling
-              if (line.startsWith("*")) {
-                return (
-                  <span
-                    key={i}
-                    className="block text-green-600 font-semibold mt-4"
-                  >
-                    {line.replace("*", "")}
-                  </span>
-                );
-              }
-
-              // Normal line
-              return (
-                <span key={i} className="block mb-2">
-                  {line}
-                </span>
-              );
-            })}
-          </p>
-
-          <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-4">
-            {/* Button 1 */}
-            <Link to="/aichat">
-              <button
-                ref={btn1Ref}
-                className="button px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg rounded-full shadow-lg transition"
+        {/* Right Side: Links + Language */}
+        <div className="flex items-center space-x-6">
+          <ul className="flex space-x-8 text-gray-700 font-medium">
+            <li>
+              <a href="/aichat" className="hover:text-green-600 transition">
+                {t.aiChat}
+              </a>
+            </li>
+            <li>
+              <a href="/analysis" className="hover:text-green-600 transition">
+                {t.analysis}
+              </a>
+            </li>
+            <li>
+              <a
+                href="/cropmonitoring"
+                className="hover:text-green-600 transition"
               >
-                {t.getStart}
+                {t.cropMonitoring}
+              </a>
+            </li>
+
+            {/* Community Dropdown */}
+            <li className="relative" ref={communityRef}>
+              <button
+                onClick={() => setIsCommunityOpen((prev) => !prev)}
+                className="hover:text-green-600 transition cursor-pointer"
+              >
+                {t.community}
               </button>
-            </Link>
-          </div>
+
+              {isCommunityOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
+                  <ul className="flex flex-col text-gray-700">
+                    <li>
+                      <a
+                        href="/Vlog"
+                        className="block px-4 py-2 hover:bg-green-100"
+                      >
+                        {t.communityMenu.vlog}
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/ExpertGuidance"
+                        className="block px-4 py-2 hover:bg-green-100"
+                      >
+                        {t.communityMenu.expertGuidance}
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/Broadcast"
+                        className="block px-4 py-2 hover:bg-green-100"
+                      >
+                        {t.communityMenu.broadcast}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </li>
+
+            <li>
+              <a href="#Support" className="hover:text-green-600 transition">
+                {t.support}
+              </a>
+            </li>
+          </ul>
+
+          {/* Small Language Dropdown */}
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+            className="border rounded px-2 py-1 text-xs focus:outline-none"
+          >
+            <option value="en">EN</option>
+            <option value="hi">हिंदी</option>
+            <option value="mr">मराठी</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+          </select>
         </div>
-
-        {/* RIGHT */}
-        <div className="hero-right flex-1 flex justify-center mb-10 md:mb-0">
-          <div className="relative -mt-10 overflow-hidden rounded-3xl">
-            <img
-              src={farmerImg}
-              alt="Farmer working in field"
-              className="w-full max-w-md object-cover block"
-            />
-            <div className="absolute inset-0 rounded-3xl pointer-events-none" />
-          </div>
-        </div>
-      </section>
-
-      <div className=" py-8 rounded-t-[50%] shadow-inner" />
-      {/* Other Sections */}
-      <OurServices />
-
-      <Connection />
-
-      <Footer />
-    </div>
+      </div>
+    </nav>
   );
 };
 
-export default Hero;
+export default Navbar;

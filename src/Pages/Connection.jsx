@@ -1,4 +1,6 @@
 import React from "react";
+import LabPic from "../assets/Picture/OIP.png"
+import Expert from "../assets/Picture/OIP (1).png"
 
 const Connection = () => {
   return (
@@ -6,7 +8,7 @@ const Connection = () => {
       {/* Box 1: Connect with nearest farmer lab */}
       <div className="flex-1 bg-green-100 rounded-2xl shadow-lg flex flex-col items-center justify-center p-6 hover:scale-105 transition-transform duration-300">
         <img
-          src="https://images.unsplash.com/photo-1581090700227-9f4ed2d6b08c?auto=format&fit=crop&w=500&q=60"
+          src={LabPic}
           alt="Farmer Lab"
           className="w-full h-64 object-cover rounded-xl mb-4"
         />
@@ -21,7 +23,7 @@ const Connection = () => {
       {/* Box 2: Expert of soil */}
       <div className="flex-1 bg-green-100 rounded-2xl shadow-lg flex flex-col items-center justify-center p-6 hover:scale-105 transition-transform duration-300">
         <img
-          src="https://images.unsplash.com/photo-1573497019412-94f0d01a263c?auto=format&fit=crop&w=500&q=60"
+          src={Expert}
           alt="Soil Expert"
           className="w-full h-64 object-cover rounded-xl mb-4"
         />

@@ -8,7 +8,8 @@ import NotFound from "./Notfound";
 import Broadcast from "./Pages/community/Broadcast";
 import ExpertGuidance from "./Pages/community/ExpertGuidance";
 import Vlog from "./Pages/community/Vlog";
-
+import CropPlanning from "./Pages/cropPlanning";
+import CropReport from "./Pages/cropReport"
 
 
 function App() {
@@ -18,7 +19,10 @@ function App() {
         <Route path="/" element={<Hero />} />
         <Route path="/" element={<Navigate to="/Login" replace />} />
         <Route path="/aichat" element={<Aichat />} />
-        <Route path="/analysis" element={<Analysis />} />
+        {/* <Route path="/analysis" element={<Analysis />} /> */}
+        <Route path="/analysis" element={<CropPlanning />} />
+        {/* <Route path="/analysis" element={<CropReport />} /> */}
+        <Route path="/cropreport" element={<CropReport />} />
         <Route path="/cropmonitoring" element={<Cropmonitoring />} />
         <Route path="/Support" element={<Support />} />
         <Route path="/Broadcast" element={<Broadcast />} />
