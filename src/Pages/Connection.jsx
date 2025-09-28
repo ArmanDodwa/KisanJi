@@ -1,8 +1,11 @@
 import React from "react";
-import LabPic from "../assets/Picture/OIP.png"
-import Expert from "../assets/Picture/OIP (1).png"
+import LabPic from "../assets/Picture/OIP.png";
+import Expert from "../assets/Picture/OIP (1).png";
+import { useLanguage } from "../Hook/LanguageContext"; // ✅ import hook
 
 const Connection = () => {
+  const { t } = useLanguage(); // ✅ use translation hook
+
   return (
     <div className="flex h-[80%] gap-8 p-6 max-w-7xl mx-auto">
       {/* Box 1: Connect with nearest farmer lab */}
@@ -13,11 +16,9 @@ const Connection = () => {
           className="w-full h-64 object-cover rounded-xl mb-4"
         />
         <h2 className="text-2xl font-bold text-green-700 mb-2">
-          Connect to Nearest Farmer Lab
+          {t.connection.labTitle}
         </h2>
-        <p className="text-gray-600 text-center">
-          Get your soil tested quickly by the nearest lab and improve your crop yield.
-        </p>
+        <p className="text-gray-600 text-center">{t.connection.labDescription}</p>
       </div>
 
       {/* Box 2: Expert of soil */}
@@ -28,11 +29,9 @@ const Connection = () => {
           className="w-full h-64 object-cover rounded-xl mb-4"
         />
         <h2 className="text-2xl font-bold text-green-700 mb-2">
-          Soil Expert Guidance
+          {t.connection.expertTitle}
         </h2>
-        <p className="text-gray-600 text-center">
-          Get advice from soil experts to improve your soil health and crop production.
-        </p>
+        <p className="text-gray-600 text-center">{t.connection.expertDescription}</p>
       </div>
     </div>
   );
