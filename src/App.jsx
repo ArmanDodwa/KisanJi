@@ -12,6 +12,7 @@ import CropPlanning from "./Pages/cropPlanning";
 import CropReport from "./Pages/cropReport"
 import PlantDiseaseDetection from "./Pages/PlantDiseaseDetection";
 import ImageUpload from "./Pages/ImageUpload";
+import MarketAnalysis from "./Pages/MarketInsights";
 
 
 
@@ -24,7 +25,8 @@ function App() {
         <Route path="/aichat" element={<Aichat />} />
         <Route path="/plantDiseaseDetection" element={<PlantDiseaseDetection />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
-        <Route path="/Market" element={<Market />} />
+        {/* <Route path="/Market" element={<Market />} /> */}
+        <Route path="/Market" element={<MarketAnalysis />} />
         <Route path="/analysis" element={<CropPlanning />} />
         {/* <Route path="/analysis" element={<CropReport />} /> */}
         <Route path="/cropreport" element={<CropReport />} />

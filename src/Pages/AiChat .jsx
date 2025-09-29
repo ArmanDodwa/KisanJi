@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import React, { useState, useEffect, useRef } from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { queryAnswer } from "../assets/queryAnswer";
 
 const AiChat = () => {
@@ -7,6 +9,7 @@ const AiChat = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [language, setLanguage] = useState("en-IN");
+  const fileInputRef = useRef(null);
 
   const {
     transcript,
@@ -28,6 +31,7 @@ const AiChat = () => {
     }
   }, [transcript, listening]);
 
+  // 📨 Send text message
   const handleSend = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -44,7 +48,9 @@ const AiChat = () => {
       const matched = queryAnswer.find((q) => lowerInput.includes(q.query));
       const botMessage = {
         type: "bot",
-        text: matched ? matched.answer : "Sorry, I don't understand this query. 🤔",
+        text: matched
+          ? matched.answer
+          : "Sorry, I don't understand this query. 🤔",
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -52,6 +58,7 @@ const AiChat = () => {
     }, 800);
   };
 
+  // 🎤 Handle mic
   const handleVoiceClick = () => {
     if (listening) {
       SpeechRecognition.stopListening();
@@ -60,6 +67,7 @@ const AiChat = () => {
     }
   };
 
+  // 🌐 Change language
   const toggleLanguage = (newLang) => {
     setLanguage(newLang);
     resetTranscript();
@@ -67,6 +75,37 @@ const AiChat = () => {
       SpeechRecognition.stopListening();
       SpeechRecognition.startListening({ continuous: true, language: newLang });
     }
+  };
+
+  // 📸 Handle image upload
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach((file) => {
+      const url = URL.createObjectURL(file);
+      console.log("+++++++++++++");
+      console.log("IMAGE URL:", url);
+
+      // Add image to messages
+      const userImageMessage = { type: "user", image: url };
+      setMessages((prev) => [...prev, userImageMessage]);
+
+      // Optionally bot response
+      setIsTyping(true);
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            type: "bot",
+            text: "Got your image! 📷 I'm analyzing it...",
+          },
+        ]);
+        setIsTyping(false);
+      }, 800);
+    });
   };
 
   return (
@@ -79,7 +118,9 @@ const AiChat = () => {
           </div>
           <div className="z-10">
             <h1 className="text-xl font-semibold">KisanJi Farmer Support</h1>
-            <p className="text-sm opacity-90">Your intelligent farming assistant</p>
+            <p className="text-sm opacity-90">
+              Your intelligent farming assistant
+            </p>
           </div>
 
           {/* Top-right Language Selector */}
@@ -96,10 +137,15 @@ const AiChat = () => {
         </div>
 
         {/* Chat Messages Area */}
-        <div id="chatbox" className="flex-1 p-5 overflow-y-auto bg-gradient-to-b from-green-50 to-white flex flex-col gap-3">
+        <div
+          id="chatbox"
+          className="flex-1 p-5 overflow-y-auto bg-gradient-to-b from-green-50 to-white flex flex-col gap-3"
+        >
           {messages.length === 0 && (
             <div className="text-center py-10 text-gray-600">
-              <h3 className="text-green-800 mb-2 text-lg">Welcome to KisanJi! 🚜</h3>
+              <h3 className="text-green-800 mb-2 text-lg">
+                Welcome to KisanJi! 🚜
+              </h3>
               <div className="flex justify-center gap-5 mb-4 text-2xl">
                 <span>🌾</span>
                 <span>🚜</span>
@@ -108,8 +154,9 @@ const AiChat = () => {
                 <span>🍅</span>
               </div>
               <p className="text-sm leading-relaxed">
-                I'm here to help you with crop management, weather insights, pest control,
-                soil health, and all your farming questions. How can I assist you today?
+                I'm here to help you with crop management, weather insights,
+                pest control, soil health, and all your farming questions. How
+                can I assist you today?
               </p>
             </div>
           )}
@@ -117,7 +164,9 @@ const AiChat = () => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex gap-3 ${msg.type === "user" ? "flex-row-reverse" : "flex-row"} items-start`}
+              className={`flex gap-3 ${
+                msg.type === "user" ? "flex-row-reverse" : "flex-row"
+              } items-start`}
             >
               <div
                 className={`flex items-center justify-center w-9 h-9 rounded-full text-xl ${
@@ -128,21 +177,33 @@ const AiChat = () => {
               >
                 {msg.type === "user" ? "👨‍💻" : "👨‍🌾"}
               </div>
-              <div
-                className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm break-words ${
-                  msg.type === "user"
-                    ? "bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-br-sm"
-                    : "bg-gradient-to-br from-green-50 to-green-100 text-green-800 border border-green-200 rounded-bl-sm"
-                }`}
-              >
-                {msg.text}
-              </div>
+
+              {/* Show image or text */}
+              {msg.image ? (
+                <img
+                  src={msg.image}
+                  alt="Uploaded"
+                  className="max-w-[200px] rounded-2xl border border-green-300"
+                />
+              ) : (
+                <div
+                  className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm break-words ${
+                    msg.type === "user"
+                      ? "bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-br-sm"
+                      : "bg-gradient-to-br from-green-50 to-green-100 text-green-800 border border-green-200 rounded-bl-sm"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              )}
             </div>
           ))}
 
           {isTyping && (
             <div className="flex items-center gap-3 mt-2">
-              <div className="flex items-center justify-center w-9 h-9 rounded-full bg-green-400 text-xl">👨‍🌾</div>
+              <div className="flex items-center justify-center w-9 h-9 rounded-full bg-green-400 text-xl">
+                👨‍🌾
+              </div>
               <div className="flex gap-1 p-3 bg-green-50 border border-green-200 rounded-2xl">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></span>
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-bounce delay-200"></span>
@@ -163,7 +224,7 @@ const AiChat = () => {
               className="flex-1 px-5 py-3 rounded-full border-2 border-green-200 bg-gray-100 focus:bg-white focus:border-green-500 outline-none text-sm transition"
             />
 
-            {/* Voice Button */}
+            {/* Mic Button */}
             <button
               type="button"
               onClick={handleVoiceClick}
@@ -171,6 +232,22 @@ const AiChat = () => {
             >
               {listening ? "🛑" : "🎤"}
             </button>
+
+            {/* 📷 Image Upload */}
+            <button
+              type="button"
+              onClick={handleImageClick}
+              className="w-12 h-12 flex items-center justify-center text-2xl text-green-600 hover:text-green-800 transition"
+            >
+              📷
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
 
             {/* Send Button */}
             <button
