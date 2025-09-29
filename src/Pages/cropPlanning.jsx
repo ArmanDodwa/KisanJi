@@ -4,15 +4,6 @@ import stateDistrictData from "../assets/stateDistrictData.js"
 import { useNavigate } from "react-router-dom";
 
 
-// export const stateDistrictData = {
-//   "Uttar Pradesh": ["Agra", "Kanpur", "Lucknow", "Meerut", "Varanasi", "Prayagraj", "Saharanpur"],
-//   Maharashtra: ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur"],
-//   Bihar: ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga", "Purnia", "Bhojpur"],
-//   Punjab: ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bhatinda", "Mohali", "Hoshiarpur"],
-//   Rajasthan: ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner", "Alwar"],
-//   "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Rewa"],
-//   Gujarat: ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar", "Jamnagar", "Bhavnagar"],
-// };
 
 const CropPlanningPage = () => {
     const navigate = useNavigate()
@@ -176,7 +167,7 @@ const CropPlanningPage = () => {
         </div>
 
         {/* 🧪 Soil Data */}
-        <div>
+        {/* <div>
           <h2 className="flex items-center text-xl font-bold text-gray-700 mb-6">
             <FaFlask className="text-green-500 mr-3 text-2xl" /> Soil Test Data
           </h2>
@@ -223,7 +214,7 @@ const CropPlanningPage = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* ✅ Analyze Button */}
