@@ -5,8 +5,6 @@ const CropMonitoring = () => {
   const [step, setStep] = useState("form"); // "form" | "loading" | "result"
 
   // Inputs
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [fertilizerCost, setFertilizerCost] = useState("");
   const [electricityCost, setElectricityCost] = useState("");
   const [otherCost, setOtherCost] = useState("");
@@ -17,8 +15,9 @@ const CropMonitoring = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!startDate || !endDate) {
-      alert("Please select start and end dates");
+    // Optional validation
+    if (!fertilizerCost && !electricityCost && !otherCost) {
+      alert("Please fill at least one cost field");
       return;
     }
 
@@ -26,10 +25,6 @@ const CropMonitoring = () => {
 
     // Simulate 2 seconds loading
     setTimeout(() => {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      const duration = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-
       const fert = parseFloat(fertilizerCost) || 0;
       const elec = parseFloat(electricityCost) || 0;
       const other = parseFloat(otherCost) || 0;
@@ -45,7 +40,7 @@ const CropMonitoring = () => {
         healthStatus: "Healthy 🌿",
       };
 
-      setResult({ cropData, duration, total });
+      setResult({ cropData, total });
       setStep("result");
     }, 2000);
   };
@@ -62,30 +57,6 @@ const CropMonitoring = () => {
           onSubmit={handleSubmit}
           className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md space-y-4"
         >
-          <div>
-            <label className="block text-gray-600 font-medium mb-1">
-              Start Date:
-            </label>
-            <input
-              type="date"
-              className="border rounded-md px-3 py-2 w-full"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-600 font-medium mb-1">
-              End Date:
-            </label>
-            <input
-              type="date"
-              className="border rounded-md px-3 py-2 w-full"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
-
           <div>
             <label className="block text-gray-600 font-medium mb-1">
               Fertilizer Cost (₹):
@@ -178,16 +149,17 @@ const CropMonitoring = () => {
           <hr />
 
           <p>
-            <span className="font-semibold">Duration:</span> {result.duration}{" "}
-            days
-          </p>
-          <p>
             <span className="font-semibold">Total Cost:</span>{" "}
             <span className="text-green-600 font-bold">₹{result.total}</span>
           </p>
 
           <button
-            onClick={() => setStep("form")}
+            onClick={() => {
+              setStep("form");
+              setFertilizerCost("");
+              setElectricityCost("");
+              setOtherCost("");
+            }}
             className="mt-4 w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300"
           >
             🔄 Reset

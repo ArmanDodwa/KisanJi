@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../NavBar";
 
 // Sample expert data
 const expertData = [
@@ -41,11 +42,12 @@ const expertData = [
 export default function ExpertGuidance() {
   return (
     <div className="max-w-7xl mx-auto mt-10 px-4">
-      <h1 className="text-3xl font-bold text-green-600 mb-8 text-center">
+    <Navbar/>
+      <h1 className="text-3xl font-bold text-green-600 mb-8 text-center mt-30">
         Connects With Experts
       </h1>
 
-      <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-15">
         {expertData.map((expert) => (
           <div
             key={expert.id}

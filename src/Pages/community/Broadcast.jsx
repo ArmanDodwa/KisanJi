@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../NavBar";
 
 // Helper function: get a random past date within X days
 function getRandomPastDate(maxDaysAgo = 10) {
@@ -12,7 +13,7 @@ function getRandomPastDate(maxDaysAgo = 10) {
 const broadcastData = [
   {
     id: 1,
-    title: "Padding Updates",
+    title: "Pending Updates",
     description:
       "Notify Dates for padding ",
     date: new Date().toISOString().split("T")[0], // today's date
@@ -42,7 +43,8 @@ const broadcastData = [
 export default function Broadcast() {
   return (
     <div className="max-w-7xl mx-auto mt-10 px-4">
-      <h1 className="text-3xl font-bold text-green-600 mb-8 text-center">
+    <Navbar/>
+      <h1 className="text-3xl font-bold text-green-600 mb-8 text-center mt-30">
         Broadcast
       </h1>
 

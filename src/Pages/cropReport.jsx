@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation  } from "react-router-dom";
+import Navbar from '../Pages/NavBar';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -142,7 +143,10 @@ const CropReport = () => {
     if (!report) return null;
     const { topCrop } = report;
     return (
-      <div className="bg-green-50 rounded-lg p-6 shadow-md border border-green-200">
+      
+      <div>
+        <div className="bg-green-50 rounded-lg p-6 shadow-md border border-green-200">
+      
         <div className="flex justify-between items-center mb-4">
           <h4 className="text-xl font-semibold text-green-800">TOP CROP RECOMMENDATION</h4>
           <span className="bg-green-600 text-white text-xs font-medium px-2 py-1 rounded-full">Kharif Season</span>
@@ -167,6 +171,7 @@ const CropReport = () => {
             <p className="text-xs text-gray-400">Stable demand for feed.</p>
           </div>
         </div>
+      </div>
       </div>
     );
   };
@@ -387,7 +392,8 @@ const CropReport = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen p-8 font-sans">
-      <div className="max-w-7xl mx-auto">
+    <Navbar />
+      <div className="max-w-7xl mx-auto mt-20">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Crop Planning & Market Analysis</h1>
           <span className="text-sm text-gray-500">Kisan Mitra AI System</span>

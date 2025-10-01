@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "../NavBar";
 
 const vlogData = {
   english: [
@@ -99,7 +100,8 @@ export default function Vlog() {
   return (
     <div className="max-w-7xl mx-auto mt-10 px-4">
       {/* Language Button */}
-      <div className="relative mb-6">
+      <Navbar/>
+      <div className="relative mb-6 mt-20">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="bg-green-600 text-white px-5 py-2 rounded-lg shadow hover:bg-green-700 transition font-medium flex items-center justify-between w-40"
@@ -141,7 +143,7 @@ export default function Vlog() {
 
       {/* Page Title */}
       <h1 className="text-3xl font-bold text-green-600 mb-8 text-center">
-        {language === "english" ? "Our Vlogs" : "हमारे व्लॉग"}
+        {language === "english" ? "Our Blogs" : "हमारे व्लॉग"}
       </h1>
 
       {/* Vlog Cards */}

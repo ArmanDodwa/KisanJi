@@ -2,7 +2,7 @@ const translations = {
   en: {
     // Navbar
     logo: "KisanJi",
-    aiChat: "Ai Chat",
+    aiChat: "AI Chat",
     analysis: "Analysis",
     cropMonitoring: "Crop Monitoring",
     community: "Community",

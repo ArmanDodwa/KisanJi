@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../Pages/NavBar';
 
 const PlantDiseaseDetection = () => {
   const data = useLocation();
@@ -16,6 +18,12 @@ const PlantDiseaseDetection = () => {
     return () => clearTimeout(timer);
   }, []);
 
+   const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/imageUpload"); // replace with your route
+  };
+
   // ✅ Loading Window UI
   if (loading) {
     return (
@@ -29,6 +37,7 @@ const PlantDiseaseDetection = () => {
   return (
     <div className="bg-gray-100 min-h-screen p-8 font-sans text-gray-800">
       {/* Header */}
+      <Navbar/>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Plant Disease Detection</h1>
         <div className="flex items-center space-x-4">
@@ -137,7 +146,9 @@ const PlantDiseaseDetection = () => {
 
         {/* New Analysis Button */}
         <div className="text-center mt-8">
-          <button className="bg-green-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-green-700 transition duration-300 flex items-center justify-center mx-auto">
+          <button 
+          onClick={handleClick}
+          className="bg-green-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-green-700 transition duration-300 flex items-center justify-center mx-auto">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
             </svg>

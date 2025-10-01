@@ -1,6 +1,6 @@
 import React from "react";
-import LabPic from "../assets/Picture/OIP.png";
-import Expert from "../assets/Picture/OIP (1).png";
+import LabPic from "../assets/Picture/image (2).png";
+import Expert from "../assets/Picture/image (1).png";
 import { useLanguage } from "../Hook/LanguageContext"; // ✅ import hook
 
 const Connection = () => {

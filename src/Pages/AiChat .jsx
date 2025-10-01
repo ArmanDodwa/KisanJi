@@ -3,6 +3,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { queryAnswer } from "../assets/queryAnswer";
+import Navbar from "../Pages/NavBar";
 
 const AiChat = () => {
   const [messages, setMessages] = useState([]);
@@ -18,20 +19,40 @@ const AiChat = () => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
+  // 🌐 Translation function (English ↔ Hindi)
+  const translateText = (text) => {
+    if (language === "hi-IN") {
+      // 🔠 You can add more translations here as needed
+      const translations = {
+        "KisanJi Farmer Support": "किसानजी किसान सहायता",
+        "Your intelligent farming assistant": "आपका बुद्धिमान खेती सहायक",
+        "Welcome to KisanJi! 🚜": "किसानजी में आपका स्वागत है! 🚜",
+        "I'm here to help you with crop management, weather insights, pest control, soil health, and all your farming questions. How can I assist you today?":
+          "मैं फसल प्रबंधन, मौसम की जानकारी, कीट नियंत्रण, मिट्टी की स्वास्थ्य और आपकी सभी खेती से जुड़ी प्रश्नों में मदद के लिए यहाँ हूँ। आज मैं आपकी किस प्रकार सहायता कर सकता हूँ?",
+        "Ask about crops, weather, pests, soil, or farming techniques...":
+          "फसलों, मौसम, कीट, मिट्टी या खेती की तकनीकों के बारे में पूछें...",
+        "Sorry, I don't understand this query. 🤔":
+          "माफ करें, मैं इस प्रश्न को समझ नहीं पाया। 🤔",
+        "Got your image! 📷 I'm analyzing it...":
+          "आपकी छवि प्राप्त हो गई! 📷 मैं इसका विश्लेषण कर रहा हूँ...",
+      };
+      return translations[text] || text; // Default fallback
+    }
+    return text; // English as default
+  };
+
   useEffect(() => {
     if (!browserSupportsSpeechRecognition) {
       alert("Your browser does not support speech recognition.");
     }
   }, [browserSupportsSpeechRecognition]);
 
-  // Update input while recording
   useEffect(() => {
     if (listening) {
       setInput(transcript);
     }
   }, [transcript, listening]);
 
-  // 📨 Send text message
   const handleSend = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -40,25 +61,23 @@ const AiChat = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     resetTranscript();
-
     setIsTyping(true);
 
     setTimeout(() => {
       const lowerInput = input.toLowerCase();
       const matched = queryAnswer.find((q) => lowerInput.includes(q.query));
+      const responseText = matched
+        ? matched.answer
+        : "Sorry, I don't understand this query. 🤔";
       const botMessage = {
         type: "bot",
-        text: matched
-          ? matched.answer
-          : "Sorry, I don't understand this query. 🤔",
+        text: translateText(responseText),
       };
-
       setMessages((prev) => [...prev, botMessage]);
       setIsTyping(false);
     }, 800);
   };
 
-  // 🎤 Handle mic
   const handleVoiceClick = () => {
     if (listening) {
       SpeechRecognition.stopListening();
@@ -67,7 +86,6 @@ const AiChat = () => {
     }
   };
 
-  // 🌐 Change language
   const toggleLanguage = (newLang) => {
     setLanguage(newLang);
     resetTranscript();
@@ -77,7 +95,6 @@ const AiChat = () => {
     }
   };
 
-  // 📸 Handle image upload
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
@@ -86,21 +103,16 @@ const AiChat = () => {
     const files = Array.from(e.target.files);
     files.forEach((file) => {
       const url = URL.createObjectURL(file);
-      console.log("+++++++++++++");
-      console.log("IMAGE URL:", url);
-
-      // Add image to messages
       const userImageMessage = { type: "user", image: url };
       setMessages((prev) => [...prev, userImageMessage]);
 
-      // Optionally bot response
       setIsTyping(true);
       setTimeout(() => {
         setMessages((prev) => [
           ...prev,
           {
             type: "bot",
-            text: "Got your image! 📷 I'm analyzing it...",
+            text: translateText("Got your image! 📷 I'm analyzing it..."),
           },
         ]);
         setIsTyping(false);
@@ -110,16 +122,19 @@ const AiChat = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-5 bg-gradient-to-br from-purple-500 to-indigo-700">
-      <div className="flex flex-col w-full max-w-3xl h-[700px] bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <Navbar />
+      <div className="flex flex-col w-full mt-20 max-w-3xl h-[700px] bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center gap-4 p-6 bg-gradient-to-br from-green-600 to-green-800 text-white relative">
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-500 text-2xl z-10">
             👨‍🌾
           </div>
           <div className="z-10">
-            <h1 className="text-xl font-semibold">KisanJi Farmer Support</h1>
+            <h1 className="text-xl font-semibold">
+              {translateText("KisanJi Farmer Support")}
+            </h1>
             <p className="text-sm opacity-90">
-              Your intelligent farming assistant
+              {translateText("Your intelligent farming assistant")}
             </p>
           </div>
 
@@ -136,7 +151,7 @@ const AiChat = () => {
           <div className="ml-2 w-3 h-3 rounded-full border-2 border-white bg-green-500 animate-pulse"></div>
         </div>
 
-        {/* Chat Messages Area */}
+        {/* Chat Messages */}
         <div
           id="chatbox"
           className="flex-1 p-5 overflow-y-auto bg-gradient-to-b from-green-50 to-white flex flex-col gap-3"
@@ -144,7 +159,7 @@ const AiChat = () => {
           {messages.length === 0 && (
             <div className="text-center py-10 text-gray-600">
               <h3 className="text-green-800 mb-2 text-lg">
-                Welcome to KisanJi! 🚜
+                {translateText("Welcome to KisanJi! 🚜")}
               </h3>
               <div className="flex justify-center gap-5 mb-4 text-2xl">
                 <span>🌾</span>
@@ -154,9 +169,9 @@ const AiChat = () => {
                 <span>🍅</span>
               </div>
               <p className="text-sm leading-relaxed">
-                I'm here to help you with crop management, weather insights,
-                pest control, soil health, and all your farming questions. How
-                can I assist you today?
+                {translateText(
+                  "I'm here to help you with crop management, weather insights, pest control, soil health, and all your farming questions. How can I assist you today?"
+                )}
               </p>
             </div>
           )}
@@ -178,7 +193,6 @@ const AiChat = () => {
                 {msg.type === "user" ? "👨‍💻" : "👨‍🌾"}
               </div>
 
-              {/* Show image or text */}
               {msg.image ? (
                 <img
                   src={msg.image}
@@ -193,7 +207,7 @@ const AiChat = () => {
                       : "bg-gradient-to-br from-green-50 to-green-100 text-green-800 border border-green-200 rounded-bl-sm"
                   }`}
                 >
-                  {msg.text}
+                  {translateText(msg.text)}
                 </div>
               )}
             </div>
@@ -213,18 +227,19 @@ const AiChat = () => {
           )}
         </div>
 
-        {/* Input Section */}
+        {/* Input */}
         <div className="flex flex-col p-5 bg-white border-t border-gray-200">
           <form onSubmit={handleSend} className="flex gap-2 items-center">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about crops, weather, pests, soil, or farming techniques..."
+              placeholder={translateText(
+                "Ask about crops, weather, pests, soil, or farming techniques..."
+              )}
               className="flex-1 px-5 py-3 rounded-full border-2 border-green-200 bg-gray-100 focus:bg-white focus:border-green-500 outline-none text-sm transition"
             />
 
-            {/* Mic Button */}
             <button
               type="button"
               onClick={handleVoiceClick}
@@ -233,7 +248,6 @@ const AiChat = () => {
               {listening ? "🛑" : "🎤"}
             </button>
 
-            {/* 📷 Image Upload */}
             <button
               type="button"
               onClick={handleImageClick}
@@ -249,7 +263,6 @@ const AiChat = () => {
               onChange={handleFileChange}
             />
 
-            {/* Send Button */}
             <button
               type="submit"
               className="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-green-800 text-white flex items-center justify-center hover:scale-110 transition-transform"
